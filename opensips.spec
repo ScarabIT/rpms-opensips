@@ -37,11 +37,11 @@
 %global _with_wolfssl 1
 %endif
 
-%global EXCLUDE_MODULES %{!?_with_auth_jwt:auth_jwt} %{!?_with_cachedb_cassandra:cachedb_cassandra} %{!?_with_cachedb_couchbase:cachedb_couchbase} %{!?_with_cachedb_dynamodb:cachedb_dynamodb} %{!?_with_event_sqs:event_sqs} %{!?_with_cachedb_mongodb:cachedb_mongodb} %{!?_with_cachedb_redis:cachedb_redis} %{!?_with_db_oracle:db_oracle} %{!?_with_osp:osp} %{!?_with_sngtc:sngtc} %{!?_with_aaa_diameter:aaa_diameter aka_av_diameter} %{?_without_db_perlvdb:db_perlvdb} %{?_without_snmpstats:snmpstats} %{!?_with_wolfssl:tls_wolfssl} launch_darkly http2d rtp.io
+%global EXCLUDE_MODULES %{!?_with_auth_jwt:auth_jwt} %{!?_with_cachedb_cassandra:cachedb_cassandra} %{!?_with_cachedb_couchbase:cachedb_couchbase} %{!?_with_cachedb_mongodb:cachedb_mongodb} %{!?_with_cachedb_redis:cachedb_redis} %{!?_with_db_oracle:db_oracle} %{!?_with_osp:osp} %{!?_with_sngtc:sngtc} %{!?_with_aaa_diameter:aaa_diameter} %{?_without_db_perlvdb:db_perlvdb} %{?_without_snmpstats:snmpstats} %{!?_with_wolfssl:tls_wolfssl}
 
 Summary:  Very fast and configurable SIP server
 Name:     opensips
-Version:  3.6.6
+Version:  3.4.18
 Release:  1%{?dist}
 License:  GPLv2+
 Group:    System Environment/Daemons
@@ -69,7 +69,6 @@ BuildRequires:  openssl-devel
 BuildRequires:  expat-devel
 BuildRequires:  xmlrpc-c-devel
 BuildRequires:  libconfuse-devel
-BuildRequires:  libmnl-devel
 %if 0%{?rhel} > 0 && 0%{?rhel} < 8
 BuildRequires:  db4-devel
 %else
@@ -195,17 +194,6 @@ per second even on low-budget hardware.
 This package provides the berkeley database module for OpenSIPS, a
 high-performance embedded DB kernel. All database tables are stored
 in files, no additional server is necessary
-
-%package  berkeley-dbschema
-Summary:  Berkeley database schema for OpenSIPS
-Group:    System Environment/Daemons
-
-%description  berkeley-dbschema
-OpenSIPS is a very fast and flexible SIP (RFC3261)
-server. Written entirely in C, OpenSIPS can handle thousands calls
-per second even on low-budget hardware.
-.
-This package provides the Berkeley database schema files for OpenSIPS.
 
 %package  carrierroute-module
 Summary:  Carrierroute module for OpenSIPS
@@ -390,20 +378,6 @@ per second even on low-budget hardware.
 .
 This package provides support for SIP Identity (see RFC 4474).
 
-%package  ipsec-module
-Summary:  IPSec proto module for OpenSIPS
-Group:    System Environment/Daemons
-Requires: %{name} = %{version}-%{release}
-Requires: libmnl
-BuildRequires:  libmnl-devel
-
-%description  ipsec-module
-OpenSIPS is a very fast and flexible SIP (RFC3261)
-server. Written entirely in C, OpenSIPS can handle thousands calls
-per second even on low-budget hardware.
-.
-This package provides IMS IPSec connections (see TS 33.203).
-
 %package  jabber-module
 Summary:  Jabber gateway module for OpenSIPS
 Group:    System Environment/Daemons
@@ -537,17 +511,6 @@ per second even on low-budget hardware.
 .
 This package provides the MySQL database driver for OpenSIPS.
 
-%package  mysql-dbschema
-Summary:  MySQL database schema for OpenSIPS
-Group:    System Environment/Daemons
-
-%description  mysql-dbschema
-OpenSIPS is a very fast and flexible SIP (RFC3261)
-server. Written entirely in C, OpenSIPS can handle thousands calls
-per second even on low-budget hardware.
-.
-This package provides the MySQL database schema files for OpenSIPS.
-
 %if 0%{?_with_db_oracle:1}
 %package  oracle-module
 Summary:  Oracle Storage Support for the OpenSIPS
@@ -611,17 +574,6 @@ server. Written entirely in C, OpenSIPS can handle thousands calls
 per second even on low-budget hardware.
 .
 This package provides the PostgreSQL database driver for OpenSIPS.
-
-%package  postgres-dbschema
-Summary:  PostgreSQL database schema for OpenSIPS
-Group:    System Environment/Daemons
-
-%description  postgres-dbschema
-OpenSIPS is a very fast and flexible SIP (RFC3261)
-server. Written entirely in C, OpenSIPS can handle thousands calls
-per second even on low-budget hardware.
-.
-This package provides the PostgreSQL database schema files for OpenSIPS.
 
 %package  presence-modules
 Summary:  SIMPLE presence modules for OpenSIPS
@@ -807,17 +759,6 @@ server. Written entirely in C, OpenSIPS can handle thousands calls
 per second even on low-budget hardware.
 .
 This package provides the SQLite database driver for OpenSIPS.
-
-%package  sqlite-dbschema
-Summary:  SQLite database schema for OpenSIPS
-Group:    System Environment/Daemons
-
-%description  sqlite-dbschema
-OpenSIPS is a very fast and flexible SIP (RFC3261)
-server. Written entirely in C, OpenSIPS can handle thousands calls
-per second even on low-budget hardware.
-.
-This package provides the SQLite database schema files for OpenSIPS.
 
 %package  stir-shaken-module
 Summary:  STIR/SHAKEN support for OpenSIPS
@@ -1113,7 +1054,7 @@ fi
 %{_libdir}/opensips/modules/alias_db.so
 %{_libdir}/opensips/modules/auth_aaa.so
 %{_libdir}/opensips/modules/auth_db.so
-%{_libdir}/opensips/modules/sqlops.so
+%{_libdir}/opensips/modules/avpops.so
 %{_libdir}/opensips/modules/b2b_entities.so
 %{_libdir}/opensips/modules/b2b_logic.so
 %{_libdir}/opensips/modules/b2b_sca.so
@@ -1126,7 +1067,6 @@ fi
 %{_libdir}/opensips/modules/callops.so
 %{_libdir}/opensips/modules/cfgutils.so
 %{_libdir}/opensips/modules/clusterer.so
-%{_libdir}/opensips/modules/config.so
 %{_libdir}/opensips/modules/db_cachedb.so
 %{_libdir}/opensips/modules/db_flatstore.so
 %{_libdir}/opensips/modules/db_text.so
@@ -1141,11 +1081,11 @@ fi
 %{_libdir}/opensips/modules/enum.so
 %{_libdir}/opensips/modules/event_datagram.so
 %{_libdir}/opensips/modules/event_flatstore.so
+%{_libdir}/opensips/modules/event_route.so
 %{_libdir}/opensips/modules/event_routing.so
 %{_libdir}/opensips/modules/event_stream.so
 %{_libdir}/opensips/modules/event_virtual.so
 %{_libdir}/opensips/modules/event_xmlrpc.so
-%{_libdir}/opensips/modules/example.so
 %{_libdir}/opensips/modules/exec.so
 %{_libdir}/opensips/modules/fraud_detection.so
 %{_libdir}/opensips/modules/freeswitch.so
@@ -1153,7 +1093,6 @@ fi
 %{_libdir}/opensips/modules/gflags.so
 %{_libdir}/opensips/modules/group.so
 %{_libdir}/opensips/modules/imc.so
-%{_libdir}/opensips/modules/janus.so
 %{_libdir}/opensips/modules/jsonrpc.so
 %{_libdir}/opensips/modules/load_balancer.so
 %{_libdir}/opensips/modules/mangler.so
@@ -1165,7 +1104,6 @@ fi
 %{_libdir}/opensips/modules/mi_fifo.so
 %{_libdir}/opensips/modules/mi_script.so
 %{_libdir}/opensips/modules/mid_registrar.so
-%{_libdir}/opensips/modules/mqueue.so
 %{_libdir}/opensips/modules/msilo.so
 %{_libdir}/opensips/modules/nat_traversal.so
 %{_libdir}/opensips/modules/nathelper.so
@@ -1176,7 +1114,6 @@ fi
 %{_libdir}/opensips/modules/proto_bin.so
 %{_libdir}/opensips/modules/proto_bins.so
 %{_libdir}/opensips/modules/proto_hep.so
-%{_libdir}/opensips/modules/proto_ipsec.so
 %{_libdir}/opensips/modules/proto_smpp.so
 %{_libdir}/opensips/modules/proto_ws.so
 %{_libdir}/opensips/modules/qos.so
@@ -1196,7 +1133,6 @@ fi
 %{_libdir}/opensips/modules/status_report.so
 %{_libdir}/opensips/modules/tracer.so
 %{_libdir}/opensips/modules/sl.so
-%{_libdir}/opensips/modules/sockets_mgm.so
 %{_libdir}/opensips/modules/speeddial.so
 %{_libdir}/opensips/modules/sql_cacher.so
 %{_libdir}/opensips/modules/sst.so
@@ -1206,7 +1142,6 @@ fi
 %{_libdir}/opensips/modules/textops.so
 %{_libdir}/opensips/modules/tm.so
 %{_libdir}/opensips/modules/topology_hiding.so
-%{_libdir}/opensips/modules/trie.so
 %{_libdir}/opensips/modules/uac.so
 %{_libdir}/opensips/modules/uac_redirect.so
 %{_libdir}/opensips/modules/uac_registrant.so
@@ -1217,7 +1152,7 @@ fi
 %doc docdir/README.alias_db
 %doc docdir/README.auth_aaa
 %doc docdir/README.auth_db
-%doc docdir/README.sqlops
+%doc docdir/README.avpops
 %doc docdir/README.b2b_entities
 %doc docdir/README.b2b_logic
 %doc docdir/README.b2b_sca
@@ -1230,7 +1165,6 @@ fi
 %doc docdir/README.callops
 %doc docdir/README.cfgutils
 %doc docdir/README.clusterer
-%doc docdir/README.config
 %doc docdir/README.db_flatstore
 %doc docdir/README.db_text
 %doc docdir/README.db_virtual
@@ -1244,11 +1178,11 @@ fi
 %doc docdir/README.enum
 %doc docdir/README.event_datagram
 %doc docdir/README.event_flatstore
+%doc docdir/README.event_route
 %doc docdir/README.event_routing
 %doc docdir/README.event_stream
 %doc docdir/README.event_virtual
 %doc docdir/README.event_xmlrpc
-%doc docdir/README.example
 %doc docdir/README.exec
 %doc docdir/README.fraud_detection
 %doc docdir/README.freeswitch
@@ -1256,7 +1190,6 @@ fi
 %doc docdir/README.gflags
 %doc docdir/README.group
 %doc docdir/README.imc
-%doc docdir/README.janus
 %doc docdir/README.jsonrpc
 %doc docdir/README.load_balancer
 %doc docdir/README.mangler
@@ -1267,7 +1200,6 @@ fi
 %doc docdir/README.mi_fifo
 %doc docdir/README.mi_script
 %doc docdir/README.mid_registrar
-%doc docdir/README.mqueue
 %doc docdir/README.msilo
 %doc docdir/README.nat_traversal
 %doc docdir/README.nathelper
@@ -1277,7 +1209,6 @@ fi
 %doc docdir/README.pike
 %doc docdir/README.proto_bin
 %doc docdir/README.proto_hep
-%doc docdir/README.proto_ipsec
 %doc docdir/README.proto_smpp
 %doc docdir/README.proto_ws
 %doc docdir/README.qos
@@ -1296,7 +1227,6 @@ fi
 %doc docdir/README.status_report
 %doc docdir/README.tracer
 %doc docdir/README.sl
-%doc docdir/README.sockets_mgm
 %doc docdir/README.speeddial
 %doc docdir/README.sql_cacher
 %doc docdir/README.sst
@@ -1307,7 +1237,6 @@ fi
 %doc docdir/README.tls
 %doc docdir/README.tm
 %doc docdir/README.topology_hiding
-%doc docdir/README.trie
 %doc docdir/README.uac
 %doc docdir/README.uac_redirect
 %doc docdir/README.uac_registrant
@@ -1322,10 +1251,8 @@ fi
 
 %files auth-modules
 %{_libdir}/opensips/modules/auth.so
-%{_libdir}/opensips/modules/auth_aka.so
 %{_libdir}/opensips/modules/uac_auth.so
 %doc docdir/README.auth
-%doc docdir/README.auth_aka
 %doc docdir/README.uac_auth
 
 %files berkeley-bin
@@ -1333,12 +1260,10 @@ fi
 
 %files berkeley-module
 %{_libdir}/opensips/modules/db_berkeley.so
-%doc docdir/README.db_berkeley
-
-%files berkeley-dbschema
 %dir %{_datadir}/opensips/db_berkeley
 %dir %{_datadir}/opensips/db_berkeley/opensips
 %{_datadir}/opensips/db_berkeley/opensips/*
+%doc docdir/README.db_berkeley
 
 %files carrierroute-module
 %{_libdir}/opensips/modules/carrierroute.so
@@ -1379,9 +1304,7 @@ fi
 %if 0%{?_with_aaa_diameter:1}
 %files diameter-module
 %{_libdir}/opensips/modules/aaa_diameter.so
-%{_libdir}/opensips/modules/aka_av_diameter.so
 %doc docdir/README.aaa_diameter
-%doc docdir/README.aka_av_diameter
 %endif
 
 %files emergency-module
@@ -1406,10 +1329,6 @@ fi
 %files identity-module
 %{_libdir}/opensips/modules/identity.so
 %doc docdir/README.identity
-
-%files ipsec-module
-%{_libdir}/opensips/modules/proto_ipsec.so
-%doc docdir/README.proto_ipsec
 
 %files jabber-module
 %{_libdir}/opensips/modules/jabber.so
@@ -1455,11 +1374,9 @@ fi
 
 %files mysql-module
 %{_libdir}/opensips/modules/db_mysql.so
-%doc docdir/README.db_mysql
-
-%files mysql-dbschema
 %dir %{_datadir}/opensips/mysql
 %{_datadir}/opensips/mysql/*.sql
+%doc docdir/README.db_mysql
 
 %if 0%{?_with_db_oracle:1}
 %files oracle-module
@@ -1511,11 +1428,9 @@ fi
 
 %files postgres-module
 %{_libdir}/opensips/modules/db_postgres.so
-%doc docdir/README.db_postgres
-
-%files postgres-dbschema
 %dir %{_datadir}/opensips/postgres
 %{_datadir}/opensips/postgres/*.sql
+%doc docdir/README.db_postgres
 
 %files presence-modules
 %{_libdir}/opensips/modules/presence.so
@@ -1526,8 +1441,6 @@ fi
 %doc docdir/README.presence_dialoginfo
 %{_libdir}/opensips/modules/presence_dfks.so
 %doc docdir/README.presence_dfks
-%{_libdir}/opensips/modules/presence_reginfo.so
-%doc docdir/README.presence_reginfo
 %{_libdir}/opensips/modules/presence_mwi.so
 %doc docdir/README.presence_mwi
 %{_libdir}/opensips/modules/presence_xcapdiff.so
@@ -1542,8 +1455,6 @@ fi
 %doc docdir/README.pua_dialoginfo
 %{_libdir}/opensips/modules/pua_mi.so
 %doc docdir/README.pua_mi
-%{_libdir}/opensips/modules/pua_reginfo.so
-%doc docdir/README.pua_reginfo
 %{_libdir}/opensips/modules/pua_usrloc.so
 %doc docdir/README.pua_usrloc
 %{_libdir}/opensips/modules/pua_xmpp.so
@@ -1566,6 +1477,8 @@ fi
 %files rabbitmq-modules
 %{_libdir}/opensips/modules/event_rabbitmq.so
 %doc docdir/README.event_rabbitmq
+%{_libdir}/opensips/modules/rabbitmq.so
+%doc docdir/README.rabbitmq
 %{_libdir}/opensips/modules/rabbitmq_consumer.so
 %doc docdir/README.rabbitmq_consumer
 
@@ -1619,8 +1532,6 @@ fi
 %files sqlite-module
 %{_libdir}/opensips/modules/db_sqlite.so
 %doc docdir/README.db_sqlite
-
-%files sqlite-dbschema
 %dir %{_datadir}/opensips/sqlite
 %{_datadir}/opensips/sqlite/*.sql
 
@@ -1672,45 +1583,71 @@ fi
 
 
 %changelog
-* Wed May 20 2026 Liviu Chircu <liviu@opensips.org> - 3.6.6-1
-- OpenSIPS minor stable release: 3.6.6-1
+* Wed May 06 2026 Liviu Chircu <liviu@opensips.org> - 3.4.18-1
+- OpenSIPS minor stable release: 3.4.18-1
 
-* Wed May 06 2026 Liviu Chircu <liviu@opensips.org> - 3.6.5-1
-- OpenSIPS minor stable release: 3.6.5-1
+* Wed Feb 18 2026 Liviu Chircu <liviu@opensips.org> - 3.4.17-1
+- OpenSIPS minor stable release: 3.4.17-1
 
-* Wed Feb 18 2026 Liviu Chircu <liviu@opensips.org> - 3.6.4-1
-- OpenSIPS minor stable release: 3.6.4-1
+* Thu Dec 18 2025 Liviu Chircu <liviu@opensips.org> - 3.4.16-1
+- OpenSIPS minor stable release: 3.4.16-1
 
-* Thu Dec 18 2025 Liviu Chircu <liviu@opensips.org> - 3.6.3-1
-- OpenSIPS minor stable release: 3.6.3-1
+* Wed Oct 22 2025 Liviu Chircu <liviu@opensips.org> - 3.4.15-1
+- OpenSIPS minor stable release: 3.4.15-1
 
-* Wed Oct 22 2025 Liviu Chircu <liviu@opensips.org> - 3.6.2-1
-- OpenSIPS minor stable release: 3.6.2-1
+* Wed Aug 20 2025 Liviu Chircu <liviu@opensips.org> - 3.4.14-1
+- OpenSIPS minor stable release: 3.4.14-1
 
-* Wed Aug 20 2025 Liviu Chircu <liviu@opensips.org> - 3.6.1-1
-- OpenSIPS minor stable release: 3.6.1-1
+* Wed Jun 25 2025 Liviu Chircu <liviu@opensips.org> - 3.4.13-1
+- OpenSIPS minor stable release: 3.4.13-1
 
-* Wed Jul 23 2025 Liviu Chircu <liviu@opensips.org> - 3.6.0-1
-- OpenSIPS minor stable release: 3.6.0-1
+* Wed Apr 23 2025 Liviu Chircu <liviu@opensips.org> - 3.4.12-1
+- OpenSIPS minor stable release: 3.4.12-1
 
-* Wed May 14 2025 Razvan Crainea <razvan@opensips.org> - 3.6.0-1
-- New module: config
+* Wed Feb 19 2025 Liviu Chircu <liviu@opensips.org> - 3.4.11-1
+- OpenSIPS minor stable release: 3.4.11-1
 
-* Tue May 13 2025 Razvan Crainea <razvan@opensips.org> - 3.6.0-1
-- New module: sockets_mgm
+* Wed Dec 18 2024 Liviu Chircu <liviu@opensips.org> - 3.4.10-1
+- OpenSIPS minor stable release: 3.4.10-1
 
-* Tue Mar 11 2025 Razvan Crainea <razvan@opensips.org> - 3.6.0-1
-- New module: janus
+* Wed Oct 23 2024 Liviu Chircu <liviu@opensips.org> - 3.4.9-1
+- OpenSIPS minor stable release: 3.4.9-1
 
-* Thu Jan 16 2025 Razvan Crainea <razvan@opensips.org> - 3.6.0-1
-- New module: trie
+* Wed Aug 21 2024 Liviu Chircu <liviu@opensips.org> - 3.4.8-1
+- OpenSIPS minor stable release: 3.4.8-1
 
-* Mon Aug 19 2024 Razvan Crainea <razvan@opensips.org> - 3.6.0-1
+* Tue Aug 20 2024 Razvan Crainea <razvan@opensips.org> - 3.4.7-1
+- Add python-setuptools dependency
+
+* Mon Aug 19 2024 Razvan Crainea <razvan@opensips.org> - 3.4.7-1
 - Replace deprecated dependency for radius modules
 
-* Sat May 18 2024 Nick Altmann <nick@altmann.pro> - 3.5.0-1
-- Specification updated for opensips 3.5
-- New modules: aka_av_diameter, auth_aka, mqueue, presence_reginfo, proto_ipsec, pua_reginfo
+* Wed Jul 24 2024 Liviu Chircu <liviu@opensips.org> - 3.4.7-1
+- OpenSIPS minor stable release: 3.4.7-1
+
+* Wed Jun 19 2024 Liviu Chircu <liviu@opensips.org> - 3.4.6-1
+- OpenSIPS minor stable release: 3.4.6-1
+
+* Thu Apr 18 2024 Liviu Chircu <liviu@opensips.org> - 3.4.5-1
+- OpenSIPS minor stable release: 3.4.5-1
+
+* Wed Feb 21 2024 Liviu Chircu <liviu@opensips.org> - 3.4.4-1
+- OpenSIPS minor stable release: 3.4.4-1
+
+* Wed Dec 20 2023 Liviu Chircu <liviu@opensips.org> - 3.4.3-1
+- OpenSIPS minor stable release: 3.4.3-1
+
+* Wed Oct 18 2023 Liviu Chircu <liviu@opensips.org> - 3.4.2-1
+- OpenSIPS minor stable release: 3.4.2-1
+
+* Thu Aug 31 2023 Liviu Chircu <liviu@opensips.org> - 3.4.1-1
+- OpenSIPS minor stable release: 3.4.1-1
+
+* Wed Jul 19 2023 Liviu Chircu <liviu@opensips.org> - 3.4.0-1
+- OpenSIPS 3.4.0 stable release: 3.4.0-1
+
+* Tue Jun 20 2023 Liviu Chircu <liviu@opensips.org> - 3.4.0-rc1-1
+- OpenSIPS 3.4 new release candidate: 3.4.0-rc1-1
 
 * Thu May 18 2023 Nick Altmann <nick@altmann.pro> - 3.4.0-1
 - Specification updated for opensips 3.4
