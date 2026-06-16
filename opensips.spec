@@ -584,6 +584,8 @@ the OSP standard defined by ETSI (TS 101 321 V4.1.1).
 Summary:  Perl extensions and database driver for OpenSIPS
 Group:    System Environment/Daemons
 BuildRequires: perl(ExtUtils::MakeMaker)
+BuildRequires: perl-generators
+BuildRequires: perl-interpreter
 BuildRequires: perl-devel
 BuildRequires: perl(ExtUtils::Embed)
 Requires: %{name} = %{version}-%{release}
